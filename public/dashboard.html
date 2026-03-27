@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyOS — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="bg-blob blob-1"></div>
+<div class="bg-blob blob-2"></div>
+<div class="bg-blob blob-3"></div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">✦</span>
+      <span class="logo-text">StudyOS</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" onclick="switchTab('dashboard', this)"><span class="nav-icon">⊞</span> Dashboard</a>
+      <a href="#" class="nav-item" onclick="switchTab('schedule', this)"><span class="nav-icon">◷</span> Schedule</a>
+      <a href="#" class="nav-item" onclick="switchTab('analytics', this)"><span class="nav-icon">◈</span> Analytics</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <span class="avatar">R</span>
+        <div>
+          <p class="u-name">Renz Mathew</p>
+          <p class="u-role">BCA · Sem 1</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="top-bar">
+      <div>
+        <p class="greeting" id="greeting">Good morning ☀️</p>
+        <h1 class="page-title" id="pageTitle">Dashboard</h1>
+      </div>
+      <div class="date-chip" id="dateChip"></div>
+    </header>
+
+    <div id="views">
+      <div id="view-dashboard" class="app-view active">
+        <div class="stat-row">
+          <div class="stat-card stat-total">
+            <div class="stat-label">Total Tasks</div>
+            <div class="stat-value" id="total">0</div>
+            <div class="stat-bar-track"><div class="stat-bar-fill fill-blue" id="totalBar"></div></div>
+          </div>
+          <div class="stat-card stat-done">
+            <div class="stat-label">Completed</div>
+            <div class="stat-value" id="done">0</div>
+            <div class="stat-bar-track"><div class="stat-bar-fill fill-green" id="doneBar"></div></div>
+          </div>
+          <div class="stat-card stat-pending">
+            <div class="stat-label">Pending</div>
+            <div class="stat-value" id="pending">0</div>
+            <div class="stat-bar-track"><div class="stat-bar-fill fill-amber" id="pendingBar"></div></div>
+          </div>
+          <div class="stat-card stat-overdue">
+            <div class="stat-label">Overdue</div>
+            <div class="stat-value" id="overdue">0</div>
+            <div class="stat-bar-track"><div class="stat-bar-fill fill-red" id="overdueBar"></div></div>
+          </div>
+        </div>
+
+        <div class="add-panel">
+          <div class="panel-header"><h2>➕ Add New Task</h2></div>
+          <div class="add-form">
+            <input id="subject" placeholder="Subject (e.g. C++)" autocomplete="off"/>
+            <input id="task" placeholder="Task description" autocomplete="off"/>
+            <input id="deadline" type="date"/>
+            <select id="priority">
+              <option value="Normal">Normal</option>
+              <option value="High">High Priority</option>
+              <option value="Low">Low Priority</option>
+            </select>
+            <button class="btn-add" onclick="addTask()">Add Task</button>
+          </div>
+        </div>
+
+        <div class="mid-row">
+          <div class="progress-panel">
+            <div class="panel-header">
+              <h2>Overall Progress</h2>
+              <span class="progress-pct" id="progressPct">0%</span>
+            </div>
+            <div class="progress-ring-wrap">
+              <svg class="ring-svg" viewBox="0 0 120 120">
+                <circle class="ring-bg" cx="60" cy="60" r="52"/>
+                <circle class="ring-fg" cx="60" cy="60" r="52" id="ringFg"/>
+              </svg>
+              <div class="ring-label" id="ringLabel">0 / 0</div>
+            </div>
+            <p class="progress-note" id="progressNote">Add tasks to get started.</p>
+          </div>
+          <div class="today-panel" style="grid-column: span 2;">
+            <div class="panel-header"><h2>📅 Due Today</h2></div>
+            <div id="todayTasks" class="today-list">
+              <p class="empty-msg">No tasks due today.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <h2>📋 All Tasks</h2>
+          <div class="filter-row">
+            <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+            <button class="filter-btn" onclick="setFilter('Pending', this)">Pending</button>
+            <button class="filter-btn" onclick="setFilter('Done', this)">Done</button>
+            <button class="filter-btn" onclick="setFilter('overdue', this)">Overdue</button>
+          </div>
+        </div>
+        <div id="taskList" class="task-list"></div>
+      </div>
+
+      <div id="view-schedule" class="app-view" style="display: none;">
+         <div class="section-header"><h2>📆 Weekly Planner</h2></div>
+         <div id="planner" class="weekly-grid"></div>
+      </div>
+
+      <div id="view-analytics" class="app-view" style="display: none;">
+         <div class="chart-panel" style="max-width: 500px; margin: 0 auto;">
+            <div class="panel-header" style="justify-content: center;"><h2>Task Split Breakdown</h2></div>
+            <canvas id="myChart"></canvas>
+         </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="chat-fab" id="chatFab" onclick="toggleChat()">
+  <span class="fab-icon">✦</span>
+  <span class="fab-label">Study AI</span>
+  <span class="fab-ping"></span>
+</div>
+
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <div class="chat-title">
+      <span class="chat-avatar">✦</span>
+      <div>
+        <p class="chat-name">Study Assistant</p>
+        <p class="chat-status">Powered by Gemini AI</p>
+      </div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-intro">
+    <p>👋 Hi Renz! I'm your AI study assistant. I can help you:</p>
+    <div class="chip-row">
+      <span class="chip" onclick="sendChip(this)">📅 Plan my schedule</span>
+      <span class="chip" onclick="sendChip(this)">⏱️ Study techniques</span>
+    </div>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input-row">
+    <input id="chatInput" placeholder="Ask anything about studying…" onkeydown="if(event.key==='Enter') sendMessage()"/>
+    <button class="send-btn" onclick="sendMessage()">↑</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

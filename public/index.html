@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyOS — Renz Mathew Philip</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #080c14;
+      --accent:  #6366f1;
+      --accent2: #a5b4fc;
+      --green:   #22c55e;
+      --text:    #e2e8f0;
+      --muted:   #64748b;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Ambient blobs */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.2;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .b1 { width: 600px; height: 600px; background: var(--accent); top: -200px; left: -100px; }
+    .b2 { width: 400px; height: 400px; background: #06b6d4; bottom: -100px; right: -80px; }
+
+    .center {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 40px;
+      animation: rise 0.8s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .logo-star {
+      font-size: 28px;
+      color: var(--accent2);
+      animation: spin 8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .logo-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a5b4fc, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(40px, 8vw, 72px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .name-grad {
+      background: linear-gradient(135deg, #e2e8f0 0%, #a5b4fc 50%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 40px;
+      letter-spacing: 0.3px;
+    }
+    .subtitle span {
+      color: var(--accent2);
+      font-weight: 500;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 32px 40px;
+      backdrop-filter: blur(20px);
+      max-width: 460px;
+      margin: 0 auto 32px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      font-size: 14px;
+      color: var(--muted);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      text-align: left;
+    }
+    .feature:last-child { border-bottom: none; }
+    .feature-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: rgba(99,102,241,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .feature-text { color: var(--text); }
+    .feature-desc { font-size: 12px; color: var(--muted); }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, var(--accent), #818cf8);
+      color: white;
+      text-decoration: none;
+      border-radius: 14px;
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 32px rgba(99,102,241,0.35);
+    }
+    .cta:hover {
+      opacity: 0.88;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(99,102,241,0.5);
+    }
+    .cta:active { transform: translateY(0); }
+
+    .stack-badge {
+      margin-top: 20px;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .stack-badge span {
+      padding: 3px 10px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+  </style>
+</head>
+<body>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+
+  <div class="center">
+    <div class="logo">
+      <span class="logo-star">✦</span>
+      <span class="logo-text">StudyOS</span>
+    </div>
+
+    <h1><span class="name-grad">Renz Mathew<br>Philip</span></h1>
+    <p class="subtitle">BCA First Semester · <span>Study Planner Project</span></p>
+
+    <div class="card">
+      <div class="feature">
+        <div class="feature-icon">⊞</div>
+        <div>
+          <div class="feature-text">Smart Dashboard</div>
+          <div class="feature-desc">Track tasks, progress, and deadlines at a glance</div>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📆</div>
+        <div>
+          <div class="feature-text">Weekly Planner</div>
+          <div class="feature-desc">Visualize tasks spread across the week</div>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">✦</div>
+        <div>
+          <div class="feature-text">AI Study Assistant</div>
+          <div class="feature-desc">Claude-powered chatbot for study help &amp; planning</div>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <div>
+          <div class="feature-text">Analytics &amp; Charts</div>
+          <div class="feature-desc">Progress rings and task-split visualizations</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="/dashboard.html" class="cta">
+      Open Dashboard →
+    </a>
+
+    <div class="stack-badge">
+      Built with
+      <span>Node.js</span>
+      <span>Express</span>
+      <span>MongoDB</span>
+      <span>Claude AI</span>
+    </div>
+  </div>
+</body>
+</html>
